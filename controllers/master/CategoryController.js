@@ -1,5 +1,5 @@
 const CategoryModel = require('../../models/master/CategoryModel');
-const { getCategoriesSchema, getCategoryByIdSchema, createCategorySchema, updateCategorySchema } = require('../../schema/master/CategorySchema');
+const { getCategoriesSchema, createCategorySchema, updateCategorySchema, getCategoryByIdSchema } = require('../../schema/master/CategorySchema');
 const Joi = require('joi');
 
 const getCategories = async (req, res) => {
@@ -23,11 +23,11 @@ const getCategoryById = async (req, res) => {
     if (error) {
       return res.status(400).json({ message: 'Invalid category ID', error: error.details });
     }
-    const result = await CategoryModel.getCategoryById(id);
+    const result = await CategoryModel.getCategoryById(parseInt(id));
     if (result.output.Status && result.recordset.length > 0) {
       res.status(200).json({ data: result.recordset[0] });
     } else {
-      res.status(404).json({ message: result.output.Message || 'Category not found' });
+      res.status(404).json({ message: result.output.Message || 'Category not found or inactive' });
     }
   } catch (err) {
     res.status(500).json({ message: 'Error fetching category', error: err.message });
@@ -73,15 +73,16 @@ const updateCategory = async (req, res) => {
 const deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const { ModifiedBy } = req.body; // Assuming ModifiedBy is passed in the body
-    const { error } = Joi.object({
-      Id: Joi.number().integer().positive().required(),
-      ModifiedBy: Joi.number().integer().positive().required()
-    }).validate({ Id: parseInt(id), ModifiedBy });
-    if (error) {
-      return res.status(400).json({ message: 'Invalid input', error: error.details });
+    const { ModifiedBy } = req.body;
+    const idValidation = Joi.number().integer().positive().required().validate(id);
+    const modifiedByValidation = Joi.number().integer().positive().required().validate(ModifiedBy);
+    if (idValidation.error || modifiedByValidation.error) {
+      return res.status(400).json({
+        message: 'Invalid input',
+        error: idValidation.error?.details || modifiedByValidation.error?.details
+      });
     }
-    const result = await CategoryModel.deleteCategory({ Id: parseInt(id), ModifiedBy });
+    const result = await CategoryModel.deleteCategory(parseInt(id), ModifiedBy);
     if (result.output.Status) {
       res.status(200).json({ message: 'Category deleted (soft) successfully' });
     } else {

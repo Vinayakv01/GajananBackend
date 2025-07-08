@@ -1,35 +1,21 @@
 const { poolPromise } = require('../../config/db');
 const sql = require('mssql');
 
-async function getAllCategories({ searchText, start, length }) {
+async function getAllConcepts({ searchText, start, length }) {
   try {
     const pool = await poolPromise;
     const result = await pool.request()
       .input('SearchText', sql.NVarChar(250), searchText)
       .input('Start', sql.Int, start)
       .input('Length', sql.Int, length)
-      .execute('mst.usp_GetCategory');
+      .execute('mst.usp_GetConcept');
     return result.recordset;
   } catch (error) {
-    throw new Error(`Database error in getAllCategories: ${error.message}`);
+    throw new Error(`Database error in getAllConcepts: ${error.message}`);
   }
 }
 
-async function getCategoryById(id) {
-  try {
-    const pool = await poolPromise;
-    const request = pool.request()
-      .input('Id', sql.Int, id)
-      .output('Status', sql.Bit)
-      .output('Message', sql.NVarChar(200));
-    const result = await request.execute('mst.usp_GetCategoryById');
-    return { recordset: result.recordset, output: result.output };
-  } catch (error) {
-    throw new Error(`Database error in getCategoryById: ${error.message}`);
-  }
-}
-
-async function insertCategory(data) {
+async function insertConcept(data) {
   try {
     const pool = await poolPromise;
     const request = pool.request()
@@ -38,14 +24,14 @@ async function insertCategory(data) {
       .output('Status', sql.Bit)
       .output('Id', sql.Int)
       .output('Message', sql.NVarChar(200));
-    const result = await request.execute('mst.usp_CreateCategory');
+    const result = await request.execute('mst.usp_CreateConcept');
     return { recordset: result.recordset, output: result.output };
   } catch (error) {
-    throw new Error(`Database error in insertCategory: ${error.message}`);
+    throw new Error(`Database error in insertConcept: ${error.message}`);
   }
 }
 
-async function updateCategory(data) {
+async function updateConcept(data) {
   try {
     const pool = await poolPromise;
     const request = pool.request()
@@ -54,14 +40,14 @@ async function updateCategory(data) {
       .input('ModifiedBy', sql.Int, data.ModifiedBy)
       .output('Status', sql.Bit)
       .output('Message', sql.NVarChar(200));
-    const result = await request.execute('mst.usp_UpdateCategoryById');
+    const result = await request.execute('mst.usp_UpdateConceptById');
     return { recordset: result.recordset, output: result.output };
   } catch (error) {
-    throw new Error(`Database error in updateCategory: ${error.message}`);
+    throw new Error(`Database error in updateConcept: ${error.message}`);
   }
 }
 
-async function deleteCategory(id, modifiedBy) {
+async function deleteConcept(id, modifiedBy) {
   try {
     const pool = await poolPromise;
     const request = pool.request()
@@ -69,11 +55,11 @@ async function deleteCategory(id, modifiedBy) {
       .input('ModifiedBy', sql.Int, modifiedBy)
       .output('Status', sql.Bit)
       .output('Message', sql.NVarChar(200));
-    const result = await request.execute('mst.usp_DeleteCategoryById');
+    const result = await request.execute('mst.usp_DeleteConceptById');
     return { recordset: result.recordset, output: result.output };
   } catch (error) {
-    throw new Error(`Database error in deleteCategory: ${error.message}`);
+    throw new Error(`Database error in deleteConcept: ${error.message}`);
   }
 }
 
-module.exports = { getAllCategories, getCategoryById, insertCategory, updateCategory, deleteCategory };
+module.exports = { getAllConcepts, insertConcept, updateConcept, deleteConcept };

@@ -5,7 +5,12 @@ dotenv.config();
 
 const brandRoutes = require('./routes/master/BrandRoutes');
 const userRoutes = require('./routes/master/UserRoutes');
-const createUserSchema = require('./routes/master/CategoryRoutes');
+const categoryRoutes = require('./routes/master/CategoryRoutes');
+const companyRoutes = require('./routes/master/CompanyRoutes');
+const conceptRoutes = require('./routes/master/ConceptRoutes');
+const finishtypesRoutes = require('./routes/master/FinishTypeRoutes');
+const itemstatusRoutes = require('./routes/master/ItemStatusRoutes');
+const manufacturerRoutes = require('./routes/master/ManufacturerRoutes');
 
 
 const app = express();
@@ -14,7 +19,13 @@ app.use(express.json());
 
 app.use('/api', brandRoutes);
 app.use('/api', userRoutes);
-app.use('/api', createUserSchema);
+app.use('/api', categoryRoutes);
+app.use('/api', companyRoutes);
+app.use('/api', conceptRoutes);
+app.use('/api', finishtypesRoutes);
+app.use('/api', itemstatusRoutes);
+app.use('/api', manufacturerRoutes);
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
