@@ -11,6 +11,10 @@ const conceptRoutes = require('./routes/master/ConceptRoutes');
 const finishtypesRoutes = require('./routes/master/FinishTypeRoutes');
 const itemstatusRoutes = require('./routes/master/ItemStatusRoutes');
 const manufacturerRoutes = require('./routes/master/ManufacturerRoutes');
+const productRoutes = require('./routes/master/ProductRoutes');
+const productimageRoutes = require('./routes/master/ProductImageRoutes');
+const sizeRoutes = require('./routes/master/SizeRoutes');
+const unitRoutes = require('./routes/master/UnitRoutes');
 
 
 const app = express();
@@ -25,6 +29,10 @@ app.use('/api', conceptRoutes);
 app.use('/api', finishtypesRoutes);
 app.use('/api', itemstatusRoutes);
 app.use('/api', manufacturerRoutes);
+app.use('/api', productRoutes);
+app.use('/api', productimageRoutes);
+app.use('/api', sizeRoutes);
+app.use('/api', unitRoutes);
 
 
 const PORT = process.env.PORT || 5000;

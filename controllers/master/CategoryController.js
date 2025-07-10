@@ -1,4 +1,4 @@
-const CategoryModel = require('../../models/master/CategoryModel');
+const CategoryModel = require('../../service/master/CategoryModel');
 const { getCategoriesSchema, createCategorySchema, updateCategorySchema, getCategoryByIdSchema } = require('../../schema/master/CategorySchema');
 const Joi = require('joi');
 

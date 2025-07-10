@@ -7,14 +7,14 @@ const getBrandsSchema = Joi.object({
 });
 
 const createBrandSchema = Joi.object({
-  Name: Joi.string().min(1).max(100).required(),
-  CreatedBy: Joi.number().integer().positive().required(),
+  name: Joi.string().min(1).max(100).required(),
+  createdBy: Joi.number().integer().positive().required(),
 });
 
 const updateBrandSchema = Joi.object({
-  Id: Joi.number().integer().positive().required(),
-  Name: Joi.string().min(1).max(100).required(),
-  ModifiedBy: Joi.number().integer().positive().required(),
+  id: Joi.number().integer().positive().required(),
+  name: Joi.string().min(1).max(100).required(),
+  modifiedBy: Joi.number().integer().positive().required(),
 });
 
 module.exports = {
